@@ -2,6 +2,7 @@ import { useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import '../styles/Login.css'
+import { Link } from 'react-router-dom'
 
 function Login({ setIsLoggedIn }) {
   const [email, setEmail] = useState('')
@@ -46,6 +47,12 @@ function Login({ setIsLoggedIn }) {
             required
           />
           <button type="submit">Login</button>
+
+            {error && <p className="error">{error}</p>}
+            <p style={{marginTop: '15px', textAlign: 'center'}}>
+            Don't have an account? <Link to="/signup">Sign Up</Link>
+            </p> 
+        
         </form>
         {error && <p className="error">{error}</p>}
         <p>Test: alice@gmail.com / password123</p>

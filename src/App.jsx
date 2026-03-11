@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './pages/Login'
+import Signup from './pages/Signup'
 import Feed from './pages/Feed'
 import Profile from './pages/Profile'
 
@@ -13,6 +14,10 @@ function App() {
         <Route 
           path="/login" 
           element={<Login setIsLoggedIn={setIsLoggedIn} />} 
+        />
+        <Route 
+          path="/signup" 
+          element={<Signup setIsLoggedIn={setIsLoggedIn} />} 
         />
         <Route 
           path="/feed" 
