@@ -1,48 +1,89 @@
-.feed-container {
-  background: #f5f5f5;
+.feed-page {
+  background: #f8f9fa;
   min-height: 100vh;
 }
 
-.feed-content {
+.feed-wrapper {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
 }
 
-.create-post-section {
-  background: white;
-  border-radius: 8px;
-  padding: 15px;
+.feed-main {
   display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-  border: 1px solid #eee;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.create-post-pic {
+/* Create Post Card */
+.create-post-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.create-post-header {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.create-post-avatar {
   width: 40px;
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
 }
 
-.create-post-btn {
+.create-post-input {
   flex: 1;
-  background: #f5f5f5;
-  border: 1px solid #ddd;
+  background: #f0f2f5;
+  border: none;
   border-radius: 20px;
-  padding: 10px 16px;
+  padding: 12px 16px;
   cursor: pointer;
-  color: #999;
-  text-align: left;
+  color: #65676b;
+  font-size: 15px;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.create-post-input:hover {
+  background: #e4e6eb;
+}
+
+.create-post-actions {
+  display: none; /* Hide for now, can be enabled later */
+}
+
+.post-action-btn {
+  flex: 1;
+  padding: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #65676b;
   font-size: 14px;
-  transition: all 0.3s;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s;
+  font-family: inherit;
 }
 
-.create-post-btn:hover {
-  background: #eee;
+.post-action-btn:hover {
+  background: #f0f2f5;
 }
 
+/* Posts Container */
+.posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -58,11 +99,12 @@
 
 .modal {
   background: white;
-  border-radius: 8px;
+  border-radius: 12px;
   width: 90%;
   max-width: 500px;
   max-height: 80vh;
   overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .modal-header {
@@ -70,12 +112,13 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #e5e7eb;
 }
 
 .modal-header h2 {
   margin: 0;
   color: #333;
+  font-size: 20px;
 }
 
 .close-btn {
@@ -83,34 +126,53 @@
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: #999;
+  color: #65676b;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .close-btn:hover {
-  color: #333;
+  background: #f0f2f5;
+  border-radius: 50%;
 }
 
 .modal form {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
 }
 
 .modal textarea {
   padding: 12px;
-  border: 1px solid #ddd;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 15px;
   font-family: inherit;
   resize: none;
 }
 
+.modal textarea:focus {
+  outline: none;
+  border-color: #845ec2;
+  box-shadow: 0 0 0 3px rgba(132, 94, 194, 0.1);
+}
+
 .modal input {
   padding: 10px 12px;
-  border: 1px solid #ddd;
+  border: 1px solid #e5e7eb;
   border-radius: 8px;
   font-size: 14px;
+  font-family: inherit;
+}
+
+.modal input:focus {
+  outline: none;
+  border-color: #845ec2;
 }
 
 .submit-btn {
@@ -120,79 +182,45 @@
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 600;
+  transition: all 0.2s;
+  font-family: inherit;
 }
 
 .submit-btn:hover {
   background: #6d4aa6;
 }
 
-.posts-feed {
-  display: flex;
-  flex-direction: column;
-}
-
+/* Loading States */
 .loading,
 .error,
 .no-posts {
   text-align: center;
   padding: 40px 20px;
-  color: #999;
-  font-size: 14px;
+  color: #65676b;
+  font-size: 15px;
 }
 
 .error {
-  color: #e74c3c;
+  color: #d32f2f;
 }
 
-@media (max-width: 768px) {
-  .feed-content {
-    padding: 15px;
-  }
-
-  .create-post-section {
+/* Responsive */
+@media (max-width: 480px) {
+  .feed-wrapper {
     padding: 12px;
-    gap: 10px;
   }
 
-  .create-post-pic {
-    width: 36px;
-    height: 36px;
+  .feed-main {
+    gap: 12px;
+  }
+
+  .create-post-card {
+    padding: 12px;
   }
 
   .modal {
     width: 95%;
-    max-height: 90vh;
-  }
-
-  .modal-header {
-    padding: 15px;
-  }
-
-  .modal form {
-    padding: 15px;
-  }
-}
-
-@media (max-width: 480px) {
-  .feed-content {
-    max-width: 100%;
-    padding: 10px;
-  }
-
-  .post-card {
-    border-radius: 4px;
-    padding: 12px;
-    margin-bottom: 12px;
-  }
-
-  .post-actions {
-    gap: 10px;
-  }
-
-  .action-btn {
-    font-size: 13px;
-    padding: 6px 8px;
   }
 }

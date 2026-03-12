@@ -132,25 +132,21 @@ function PostCard({ post, onPostUpdate }) {
 )}
 
       {/* Post Actions */}
-      <div className="post-actions">
-        <button 
-          className={`action-btn ${isLiked ? 'liked' : ''}`}
-          onClick={handleLike}
-          disabled={loading}
-        >
-          {isLiked ? '❤️' : '🤍'} {likeCount}
-        </button>
-        <button 
-          className="action-btn"
-          onClick={() => setShowComments(!showComments)}
-        >
-          💬 {comments.length}
-        </button>
-        <button className="action-btn">
-          📤 Share
-        </button>
-      </div>
-
+<div className="post-actions">
+  <button 
+    className={`action-btn ${isLiked ? 'liked' : ''}`}
+    onClick={handleLike}
+    disabled={loading}
+  >
+    {isLiked ? '❤️' : '🤍'} {likeCount}
+  </button>
+  <button 
+    className="action-btn"
+    onClick={() => setShowComments(!showComments)}
+  >
+    💬 {comments.length}
+  </button>
+</div>
       {/* Comments Section */}
       {showComments && (
         <div className="comments-section">
