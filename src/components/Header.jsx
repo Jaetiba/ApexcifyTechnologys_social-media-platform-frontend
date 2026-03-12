@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import SearchBar from './SearchBar'
 import '../styles/Header.css'
 
 function Header() {
@@ -20,6 +21,8 @@ function Header() {
     <header className="header">
       <div className="header-container">
         <h1 className="logo">ApexCify</h1>
+
+        <SearchBar />
 
         <div className="header-right">
           <button 

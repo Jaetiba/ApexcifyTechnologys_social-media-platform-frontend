@@ -12,6 +12,7 @@ function Profile() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [isFollowing, setIsFollowing] = useState(false)
+  const [actionLoading, setActionLoading] = useState(false)
   const currentUser = JSON.parse(localStorage.getItem('user'))
 
   useEffect(() => {
@@ -25,7 +26,7 @@ function Profile() {
         `${import.meta.env.VITE_API_URL}/api/users/${username}`
       )
       setProfile(response.data)
-      setIsFollowing(response.data.followers?.includes(currentUser.id) || false)
+      setIsFollowing(response.data.followers?.some(f => f._id === currentUser.id || f === currentUser.id) || false)
     } catch (err) {
       setError('Failed to load profile')
     } finally {
@@ -45,13 +46,49 @@ function Profile() {
   }
 
   const handleFollow = async () => {
-    // TODO: Implement follow/unfollow API call
-    setIsFollowing(!isFollowing)
+    try {
+      setActionLoading(true)
+      if (isFollowing) {
+        // Unfollow
+        await axios.delete(
+          `${import.meta.env.VITE_API_URL}/api/users/${profile._id}/follow`,
+          { data: { userId: currentUser.id } }
+        )
+      } else {
+        // Follow
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/api/users/${profile._id}/follow`,
+          { userId: currentUser.id }
+        )
+      }
+      setIsFollowing(!isFollowing)
+      // Refresh profile to update follower count
+      fetchProfile()
+    } catch (err) {
+      console.error('Failed to follow/unfollow:', err)
+    } finally {
+      setActionLoading(false)
+    }
   }
 
-  if (loading) return <div className="loading">Loading profile...</div>
-  if (error) return <div className="error">{error}</div>
-  if (!profile) return <div className="error">User not found</div>
+  if (loading) return (
+    <div className="profile-container">
+      <Header />
+      <div className="loading">Loading profile...</div>
+    </div>
+  )
+  if (error) return (
+    <div className="profile-container">
+      <Header />
+      <div className="error">{error}</div>
+    </div>
+  )
+  if (!profile) return (
+    <div className="profile-container">
+      <Header />
+      <div className="error">User not found</div>
+    </div>
+  )
 
   return (
     <div className="profile-container">
@@ -89,14 +126,15 @@ function Profile() {
               <button 
                 className={`follow-btn ${isFollowing ? 'following' : ''}`}
                 onClick={handleFollow}
+                disabled={actionLoading}
               >
-                {isFollowing ? 'Following' : 'Follow'}
+                {actionLoading ? '...' : (isFollowing ? 'Following' : 'Follow')}
               </button>
             )}
           </div>
         </div>
 
-        {/* User Posts Grid */}
+        {/* User Posts */}
         <div className="profile-posts">
           <h2>Posts</h2>
           {posts.length === 0 ? (

@@ -1,25 +1,84 @@
 import { useState } from 'react'
+// import { useState } from 'react'
+import React from 'react'  // Add this
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 import '../../styles/PostCard.css'
 
-function PostCard({ post }) {
+function PostCard({ post, onPostUpdate }) {
   const [isLiked, setIsLiked] = useState(false)
   const [likeCount, setLikeCount] = useState(post.likes.length)
+  const [comments, setComments] = useState(post.comments || [])
   const [showComments, setShowComments] = useState(false)
   const [newComment, setNewComment] = useState('')
+
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
   const user = JSON.parse(localStorage.getItem('user'))
 
+  // Check if current user already liked
+  React.useEffect(() => {
+    setIsLiked(post.likes.includes(user.id))
+  }, [post.likes, user.id])
+
   const handleLike = async () => {
-    setIsLiked(!isLiked)
-    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1)
-    // TODO: Call backend API to like/unlike
+    try {
+      setLoading(true)
+      if (isLiked) {
+        // Unlike
+        await axios.delete(
+          `${import.meta.env.VITE_API_URL}/api/posts/${post._id}/like`,
+          { data: { userId: user.id } }
+        )
+        setLikeCount(likeCount - 1)
+      } else {
+        // Like
+        await axios.post(
+          `${import.meta.env.VITE_API_URL}/api/posts/${post._id}/like`,
+          { userId: user.id }
+        )
+        setLikeCount(likeCount + 1)
+      }
+      setIsLiked(!isLiked)
+    } catch (err) {
+      console.error('Failed to like/unlike post:', err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault()
-    // TODO: Call backend API to add comment
-    setNewComment('')
+    if (!newComment.trim()) return
+
+    try {
+      setLoading(true)
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/posts/${post._id}/comments`,
+        {
+          userId: user.id,
+          content: newComment
+        }
+      )
+      
+      setComments([...comments, response.data])
+      setNewComment('')
+    } catch (err) {
+      console.error('Failed to add comment:', err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/posts/comments/${commentId}`
+      )
+      setComments(comments.filter(c => c._id !== commentId))
+    } catch (err) {
+      console.error('Failed to delete comment:', err)
+    }
   }
 
   const handleProfileClick = () => {
@@ -69,6 +128,7 @@ function PostCard({ post }) {
         <button 
           className={`action-btn ${isLiked ? 'liked' : ''}`}
           onClick={handleLike}
+          disabled={loading}
         >
           {isLiked ? '❤️' : '🤍'} {likeCount}
         </button>
@@ -76,7 +136,7 @@ function PostCard({ post }) {
           className="action-btn"
           onClick={() => setShowComments(!showComments)}
         >
-          💬 {post.comments.length}
+          💬 {comments.length}
         </button>
         <button className="action-btn">
           📤 Share
@@ -87,7 +147,7 @@ function PostCard({ post }) {
       {showComments && (
         <div className="comments-section">
           <div className="comments-list">
-            {post.comments.map(comment => (
+            {comments.map(comment => (
               <div key={comment._id} className="comment">
                 <img 
                   src={comment.userId.profilePic} 
@@ -98,6 +158,14 @@ function PostCard({ post }) {
                   <h4>{comment.userId.username}</h4>
                   <p>{comment.content}</p>
                 </div>
+                {comment.userId._id === user.id && (
+                  <button 
+                    className="delete-comment-btn"
+                    onClick={() => handleDeleteComment(comment._id)}
+                  >
+                    ✕
+                  </button>
+                )}
               </div>
             ))}
           </div>
@@ -109,9 +177,12 @@ function PostCard({ post }) {
               placeholder="Add a comment..."
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
+              disabled={loading}
               required
             />
-            <button type="submit">Post</button>
+            <button type="submit" disabled={loading}>
+              {loading ? '...' : 'Post'}
+            </button>
           </form>
         </div>
       )}

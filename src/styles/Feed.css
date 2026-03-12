@@ -145,3 +145,54 @@
 .error {
   color: #e74c3c;
 }
+
+@media (max-width: 768px) {
+  .feed-content {
+    padding: 15px;
+  }
+
+  .create-post-section {
+    padding: 12px;
+    gap: 10px;
+  }
+
+  .create-post-pic {
+    width: 36px;
+    height: 36px;
+  }
+
+  .modal {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .modal-header {
+    padding: 15px;
+  }
+
+  .modal form {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .feed-content {
+    max-width: 100%;
+    padding: 10px;
+  }
+
+  .post-card {
+    border-radius: 4px;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+
+  .post-actions {
+    gap: 10px;
+  }
+
+  .action-btn {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+}

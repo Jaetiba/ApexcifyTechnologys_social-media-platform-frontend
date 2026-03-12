@@ -159,3 +159,17 @@
 .comment-form button:hover {
   background: #6d4aa6;
 }
+
+.delete-comment-btn {
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 5px;
+  margin-left: auto;
+}
+
+.delete-comment-btn:hover {
+  color: #e74c3c;
+}

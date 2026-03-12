@@ -8,12 +8,13 @@
 }
 
 .header-container {
-  max-width: 600px;
+  max-width: 1000px;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
+  gap: 20px;
 }
 
 .logo {
@@ -21,6 +22,7 @@
   font-size: 24px;
   font-weight: bold;
   margin: 0;
+  min-width: fit-content;
 }
 
 .header-right {
@@ -38,6 +40,7 @@
   padding: 8px 12px;
   border-radius: 5px;
   transition: background 0.3s;
+  white-space: nowrap;
 }
 
 .header-btn:hover {
@@ -78,10 +81,29 @@
   background: #f5f5f5;
 }
 
-.dropdown-menu button:first-child {
-  border-radius: 5px 5px 0 0;
+@media (max-width: 768px) {
+  .header-container {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .header-btn {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
 }
 
-.dropdown-menu button:last-child {
-  border-radius: 0 0 5px 5px;
+@media (max-width: 600px) {
+  .header-container {
+    padding: 0 15px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .header-btn {
+    font-size: 12px;
+    padding: 5px 8px;
+  }
 }
