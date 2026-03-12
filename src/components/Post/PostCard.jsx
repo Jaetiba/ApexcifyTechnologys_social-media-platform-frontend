@@ -116,12 +116,20 @@ function PostCard({ post, onPostUpdate }) {
 
       {/* Post Images */}
       {post.images && post.images.length > 0 && (
-        <div className="post-images">
-          {post.images.map((img, idx) => (
-            <img key={idx} src={img} alt={`post-${idx}`} className="post-img" />
-          ))}
-        </div>
-      )}
+  <div className="post-images">
+    {post.images.map((img, idx) => (
+      <img 
+        key={idx} 
+        src={img} 
+        alt={`post-${idx}`} 
+        className="post-img"
+        onError={(e) => {
+          e.target.style.display = 'none';
+        }}
+      />
+    ))}
+  </div>
+)}
 
       {/* Post Actions */}
       <div className="post-actions">

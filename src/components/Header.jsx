@@ -15,33 +15,59 @@ function Header() {
 
   const handleProfileClick = () => {
     navigate(`/profile/${user.username}`)
+    setIsOpen(false)
+  }
+
+  const handleLogoClick = () => {
+    navigate('/feed')
   }
 
   return (
     <header className="header">
       <div className="header-container">
-        <h1 className="logo">ApexCify</h1>
+        {/* Logo */}
+        <button 
+          className="logo"
+          onClick={handleLogoClick}
+        >
+          ApexCify
+        </button>
 
+        {/* Search Bar */}
         <SearchBar />
 
-        <div className="header-right">
+        {/* User Menu */}
+        <div className="user-menu">
+          {/* Profile Picture Button */}
           <button 
-            className="header-btn"
+            className="profile-btn"
             onClick={handleProfileClick}
+            title="View Profile"
           >
-            👤 {user.username}
+            <img 
+              src={user.profilePic} 
+              alt={user.username}
+              className="profile-avatar"
+            />
           </button>
 
+          {/* Dropdown Menu */}
           <div className="dropdown">
             <button 
-              className="header-btn menu-btn"
+              className="menu-btn"
               onClick={() => setIsOpen(!isOpen)}
+              title="Menu"
             >
               ⋮
             </button>
             {isOpen && (
               <div className="dropdown-menu">
-                <button onClick={handleLogout}>Logout</button>
+                <button onClick={handleProfileClick} className="menu-item">
+                  👤 View Profile
+                </button>
+                <button onClick={handleLogout} className="menu-item logout">
+                  🚪 Logout
+                </button>
               </div>
             )}
           </div>

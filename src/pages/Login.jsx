@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import '../styles/Login.css'
-import { Link } from 'react-router-dom'
 
 function Login({ setIsLoggedIn }) {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('alice@gmail.com')
+  const [password, setPassword] = useState('password123')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
 
   const handleLogin = async (e) => {
     e.preventDefault()
+    setLoading(true)
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/login`,
@@ -22,40 +23,82 @@ function Login({ setIsLoggedIn }) {
       setIsLoggedIn(true)
       navigate('/feed')
     } catch (err) {
-      setError('Invalid email or password')
-      return err.response?.data?.message || 'Login failed'
+      setError(err.response?.data?.error || 'Login failed')
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <div className="login-container">
-      <div className="login-box">
-        <h1>ApexCify</h1>
-        <form onSubmit={handleLogin}>
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-          <button type="submit">Login</button>
+    <div className="login-page">
+      <div className="login-container">
+        {/* Left Side - Brand */}
+        <div className="login-brand">
+          <div className="brand-content">
+            <h1>ApexCify</h1>
+            <p>Connect with your community</p>
+            <div className="brand-features">
+              <div className="feature">
+                <span className="feature-icon">📸</span>
+                <span>Share moments</span>
+              </div>
+              <div className="feature">
+                <span className="feature-icon">❤️</span>
+                <span>Connect & engage</span>
+              </div>
+              <div className="feature">
+                <span className="feature-icon">👥</span>
+                <span>Build community</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-            {error && <p className="error">{error}</p>}
-            <p style={{marginTop: '15px', textAlign: 'center'}}>
-            Don't have an account? <Link to="/signup">Sign Up</Link>
-            </p> 
-        
-        </form>
-        {error && <p className="error">{error}</p>}
-        <p>Test: alice@gmail.com / password123</p>
+        {/* Right Side - Form */}
+        <div className="login-form-container">
+          <form onSubmit={handleLogin} className="login-form">
+            <h2>Welcome back</h2>
+            <p className="form-subtitle">Sign in to your account</p>
+
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="you@example.com"
+                required
+                disabled={loading}
+              />
+            </div>
+
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+                disabled={loading}
+              />
+            </div>
+
+            {error && <div className="error-message">{error}</div>}
+
+            <button 
+              type="submit" 
+              className="login-btn"
+              disabled={loading}
+            >
+              {loading ? 'Signing in...' : 'Sign in'}
+            </button>
+
+            <p className="signup-link">
+              Don't have an account? <Link to="/signup">Create one</Link>
+            </p>
+          </form>
+        </div>
       </div>
     </div>
   )

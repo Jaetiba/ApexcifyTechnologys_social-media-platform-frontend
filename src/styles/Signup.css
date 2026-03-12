@@ -1,97 +1,193 @@
-.signup-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.signup-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #845ec2 0%, #d65db1 100%);
-  padding: 20px;
-}
-
-.signup-box {
   background: white;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signup-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   width: 100%;
-  max-width: 400px;
+  max-width: 1000px;
+  height: 100vh;
+  max-height: 900px;
 }
 
-.signup-box h1 {
-  text-align: center;
-  color: #845ec2;
-  margin-bottom: 10px;
-  font-size: 28px;
-}
-
-.signup-box h2 {
-  text-align: center;
-  color: #666;
-  font-size: 18px;
-  margin-bottom: 30px;
-  font-weight: 400;
-}
-
-.signup-box form {
+/* Brand Section */
+.signup-brand {
+  background: #845ec2;
+  padding: 60px 40px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  color: white;
 }
 
-.signup-box input {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+.signup-brand .brand-content h1 {
+  font-size: 48px;
+  margin: 0 0 15px 0;
+  font-weight: 700;
+}
+
+.signup-brand .brand-content p {
+  font-size: 18px;
+  margin: 0;
+  opacity: 0.95;
+}
+
+/* Form Section */
+.signup-form-container {
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.1);
+}
+
+.signup-form {
+  width: 100%;
+  max-width: 380px;
+}
+
+.signup-form h2 {
+  font-size: 28px;
+  margin: 0 0 8px 0;
+  color: #333;
+  font-weight: 700;
+}
+
+.form-subtitle {
+  color: #999;
+  margin: 0 0 25px 0;
   font-size: 14px;
-  transition: border 0.3s;
 }
 
-.signup-box input:focus {
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: all 0.3s;
+  background: #fafafa;
+  font-family: inherit;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
   outline: none;
+  background: white;
   border-color: #845ec2;
+  box-shadow: 0 0 0 3px rgba(132, 94, 194, 0.1);
 }
 
-.signup-box button {
+.form-group input:disabled,
+.form-group textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background: #ffebee;
+  color: #c62828;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.signup-btn {
+  width: 100%;
   padding: 12px;
   background: #845ec2;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s;
-  font-weight: 500;
-  margin-top: 10px;
+  transition: all 0.3s;
+  margin-bottom: 20px;
 }
 
-.signup-box button:hover:not(:disabled) {
+.signup-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
   background: #6d4aa6;
+  box-shadow: 0 8px 16px rgba(132, 94, 194, 0.3);
 }
 
-.signup-box button:disabled {
-  background: #ccc;
+.signup-btn:disabled {
+  opacity: 0.7;
   cursor: not-allowed;
 }
 
-.error {
-  color: red;
+.login-link {
   text-align: center;
-  margin-top: 15px;
-  font-size: 14px;
-}
-
-.signup-box p {
-  text-align: center;
-  margin-top: 15px;
-  font-size: 14px;
   color: #666;
+  font-size: 14px;
+  margin: 0;
 }
 
-.signup-box a {
+.login-link a {
   color: #845ec2;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.signup-box a:hover {
+.login-link a:hover {
   text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .signup-container {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .signup-brand {
+    border-radius: 0;
+    padding: 40px 20px;
+    min-height: 250px;
+  }
+
+  .signup-brand .brand-content h1 {
+    font-size: 36px;
+  }
+
+  .signup-brand .brand-content p {
+    font-size: 16px;
+  }
+
+  .signup-form-container {
+    padding: 30px 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
 }

@@ -173,3 +173,12 @@
 .delete-comment-btn:hover {
   color: #e74c3c;
 }
+
+.post-img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  max-height: 400px;
+  object-fit: cover;
+  width: 100%;
+}
